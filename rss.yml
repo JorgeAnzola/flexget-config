@@ -1,0 +1,10 @@
+inputs:
+  - rss: { url: 'https://www.torlock.com/television/rss.xml', silent: yes }
+  - rss: { url: 'https://torrentgalaxy.to/rss', silent: yes }
+  - rss: { url: 'https://rarbg.to/rssdd.php', silent: yes }
+  - rss: { url: 'https://glodls.to/rss.php?cat=28,41,1', silent: yes }
+  - rss: { url: 'https://www.limetorrents.info/rss/', silent: yes }
+  - rss: { url: 'https://www.torlock.com/movies/rss.xml', silent: yes }
+  - rss: { url: 'https://www.torlock.com/television/rss.xml', silent: yes }
+  - rss: { url: 'https://www.torrentfunk.com/television/rss.xml', silent: yes }
+  - rss: { url: 'https://www.torrentfunk.com/movies/rss.xml', silent: yes }

@@ -1,0 +1,149 @@
+web_server: yes
+
+schedules:
+  - tasks: '*'
+    interval:
+      minutes: 5
+
+tasks:
+  discover_series:
+    template: [ tv ]
+    discover:
+      what:
+        - next_series_episodes:
+            from_start: yes
+      from:
+        - piratebay: yes
+      interval: 1 hour  # Search for expected episodes again every hour
+
+  move_done:
+    priority: 5
+    imdb_lookup: yes
+    disable:
+      - seen
+    filesystem:
+      path: /media/jorgeanzola/EXTRA/transmission-daemon/downloads
+      regexp: '.*\.(rar|avi|mkv|mp4|m4v)$'
+      recursive: yes
+    accept_all: yes
+    regexp:
+      reject:
+        - sample
+        - trailer
+    proper_movies: yes
+    require_field: [ movie_name, movie_year ]
+    move:
+      to: "/media/jorgeanzola/EXTRA/Videos/Movies/{{ movie_name }} ({{movie_year}})/"
+      rename: '{{ movie_name }} - {{movie_year}}'
+
+  remove_stale_torrents:
+    priority: 20
+    from_transmission: yes
+    disable: [ seen, seen_info_hash ]
+    if:
+      - transmission_progress == 100: accept
+      - not transmission_seed_ratio_ok: reject
+      - not transmission_idle_limit_ok: reject
+    transmission:
+      action: purge
+
+  movies:
+    exists_movie: /media/jorgeanzola/EXTRA/Videos/Movies/
+    priority: 3
+    interval: 1 minutes
+    trakt_lookup: yes
+    list_add:
+      - trakt_list:
+          username: jorgeanzola
+          list: watchlist
+          type: movies
+    list_match:
+      from:
+        - movie_list: movies
+    transmission: yes
+    set:
+      content_filename: '{{ movie_name | pathscrub | trim }} ({{ movie_year }}){% if quality %} - {{ quality }}{% endif %}'
+      label: movies
+      movedone: /media/jorgeanzola/EXTRA/Videos/Movies/{{ movie_name | pathscrub | trim }} ({{ movie_year}})
+    regexp:
+      reject:
+        - 3d
+        - extras
+  movies_search:
+    trakt_lookup: yes
+    priority: 10
+    discover:
+      what:
+        - movie_list: watchlist
+      from:
+        - piratebay: yes
+      interval: 7 days
+    torrent_alive: 10
+    quality: 720p+
+    list_match:
+      from:
+        - movie_list: watchlist
+    transmission: yes
+
+  move_episodes:
+    priority: 1
+    filesystem:
+      path: /media/jorgeanzola/EXTRA/transmission-daemon/downloads
+      regexp: '.*\.(avi|mkv|mp4)$'
+      recursive: yes
+    regexp:
+      reject:
+        - sample
+    require_field: series_name
+    accept_all: yes
+    metainfo_series: yes
+    move:
+      to: /media/jorgeanzola/EXTRA/Videos/TV/{{series_name}}/Season {{series_season|pad(2)}}
+      rename: '{{ series_name }} - {{ series_id }}{{ location|pathext }}'
+      along:
+        extensions:
+          - sub
+          - srt
+        subdirs:
+          - Subs
+
+templates:
+  global:
+    content_filter:
+      reject:
+        - password.txt
+        - '*.rar'
+        - '*.zip'
+      require:
+        - '*.avi'
+        - '*.mkv'
+        - '*.mp4'
+    plugin_priority:
+      piratebay: 140
+    retry_failed: true
+    
+  tv:
+    transmission: yes
+    series:
+      settings:
+        Default: &DEFAULT_SETTING
+          propers: 48 hours
+        Best:
+          <<: *DEFAULT_SETTING
+          quality: 1080p
+        Good:
+          <<: *DEFAULT_SETTING
+          quality: 720p
+      Best:
+        - Your Honor:
+            begin: S01E01
+        - The Act:
+            begin: S01E01
+        - The Handmaids Tale:
+            begin: S04E01
+        - Attack On titan:
+            begin: S04E01
+        - This Is Us:
+            begin: S05E06
+        - Keeping Up With The Kardashians:
+            begin: S03E01
