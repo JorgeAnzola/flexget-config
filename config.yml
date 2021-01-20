@@ -14,7 +14,7 @@ tasks:
             from_start: yes
       from:
         - piratebay: yes
-      interval: 1 hour  # Search for expected episodes again every hour
+      interval: 1 hour
 
   move_done:
     priority: 5
@@ -69,6 +69,7 @@ tasks:
       reject:
         - 3d
         - extras
+
   movies_search:
     trakt_lookup: yes
     priority: 10
@@ -121,29 +122,7 @@ templates:
     plugin_priority:
       piratebay: 140
     retry_failed: true
-    
+
   tv:
     transmission: yes
-    series:
-      settings:
-        Default: &DEFAULT_SETTING
-          propers: 48 hours
-        Best:
-          <<: *DEFAULT_SETTING
-          quality: 1080p
-        Good:
-          <<: *DEFAULT_SETTING
-          quality: 720p
-      Best:
-        - Your Honor:
-            begin: S01E01
-        - The Act:
-            begin: S01E01
-        - The Handmaids Tale:
-            begin: S04E01
-        - Attack On titan:
-            begin: S04E01
-        - This Is Us:
-            begin: S05E06
-        - Keeping Up With The Kardashians:
-            begin: S03E01
+    include: series.yml
