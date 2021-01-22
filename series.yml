@@ -9,6 +9,8 @@ series:
       <<: *DEFAULT_SETTING
       quality: 720p
   Best:
+    - The Morning Show:
+        begin: S01E01
     - Your Honor:
         begin: S01E01
     - The Act:
