@@ -9,15 +9,11 @@ series:
       <<: *DEFAULT_SETTING
       quality: 720p
   Best:
-    - The Morning Show:
-        begin: S01E01
     - Your Honor:
         begin: S01E01
-    - The Handmaids Tale:
-        begin: S04E01
     - Attack On titan:
         begin: S04E01
     - This Is Us:
         begin: S05E06
-    - Keeping Up With The Kardashians:
+    - "The Handmaid's Tale"
         begin: S03E01
