@@ -79,7 +79,7 @@ tasks:
       from:
         - piratebay: yes
       interval: 7 days
-    torrent_alive: 5
+    torrent_alive: 1
     quality: 720p+
     list_match:
       from:
