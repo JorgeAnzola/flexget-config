@@ -9,8 +9,6 @@ series:
       <<: *DEFAULT_SETTING
       quality: 720p
   Best:
-    - Your Honor:
-        begin: S01E01
     - Attack On titan:
         begin: S04E01
     - Shingeki no Kyojin:
@@ -23,5 +21,5 @@ series:
         begin: S02E01
     - "The Handmaid's Tale":
         begin: S03E01
-    - "Demon Slayer: Kimetsu no Yaiba":
-        begin: S01E01
+    - Keeping Up With The Kardashians:
+        begin: S20E11 
